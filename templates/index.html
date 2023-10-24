@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Finder</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .search-container {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        input[type="submit"] {
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #output {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <h1>Books Finder</h1>
+        <form id="search-form">
+            <input type="text" id="book-title" placeholder="Enter title of a book">
+            <input type="submit" value="Search">
+        </form>
+        <div id="output">
+            <!-- Output data will be displayed here -->
+        </div>
+    </div>
+
+<!--    <script>-->
+<!--    document.getElementById("search-form").addEventListener("submit", function(event) {-->
+<!--        event.preventDefault();-->
+<!--        const bookTitle = document.getElementById("book-title").value;-->
+
+<!--        fetch("/search", {-->
+<!--            method: "POST", // Use POST method to send data to the server-->
+<!--            headers: {-->
+<!--                "Content-Type": "application/json",-->
+<!--            },-->
+<!--            body: JSON.stringify({ title: bookTitle }), // Send the input as JSON-->
+<!--        })-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            document.getElementById("output").innerHTML = data;-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error("Error:", error);-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!--<script>-->
+<!--    document.getElementById("search-form").addEventListener("submit", function(event) {-->
+<!--        event.preventDefault();-->
+<!--        const bookTitle = document.getElementById("book-title").value;-->
+
+<!--        fetch("/search", {-->
+<!--            method: "POST",-->
+<!--            headers: {-->
+<!--                "Content-Type": "application/json",-->
+<!--            },-->
+<!--            body: JSON.stringify({ title: bookTitle }),-->
+<!--        })-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            const outputDiv = document.getElementById("output");-->
+<!--            outputDiv.innerHTML = ""; // Clear the previous content-->
+
+<!--            data.forEach(item => {-->
+<!--                const p = document.createElement("p");-->
+<!--                p.textContent = item;-->
+<!--                outputDiv.appendChild(p);-->
+<!--            });-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error("Error:", error);-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<script>
+    document.getElementById("search-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const bookTitle = document.getElementById("book-title").value;
+
+        fetch("/search", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ title: bookTitle }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = ""; // Clear the previous content
+
+            data.forEach(item => {
+                if (item.startsWith("http")) {
+                    // If the item starts with "http," it's a URL
+                    const img = document.createElement("img");
+                    img.src = item;
+                    outputDiv.appendChild(img);
+                } else {
+                    // Otherwise, create a paragraph
+                    const p = document.createElement("p");
+                    p.textContent = item;
+                    outputDiv.appendChild(p);
+                }
+            });
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    });
+</script>
+</body>
+</html>
